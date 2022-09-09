@@ -27,7 +27,10 @@ jobs:
       #   with:
       #     docker_compose: 'docker-compose.yml' # required
       #     repo_token: "${{ secrets.REGISTRY_TOKEN }}"
-
+      - name: docker ps
+        run: docker ps
+      - name: docker images
+        run: docker images
       - name: push the db images
         run: docker push ${{ secrets.REGISTRY }}/${{ secrets.REGISTRY_USERNAME }}/bootcamp-26/bootcamp-26_db:latest
       - name: push the backend image
