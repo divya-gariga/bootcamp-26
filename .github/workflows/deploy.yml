@@ -1,0 +1,24 @@
+name: bootcamp 26 CI/CD
+env:
+  token: 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
+on:
+  push:
+    branches:
+      - main
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: clone repo
+        uses: actions/checkout@v2
+      - name: docker login to github container registry
+        uses: docker/login-action/@v2
+        with:
+         registry: ${{ secrets.REGISTRY }}
+         username: ${{ secrets.REGISTRY_USERNAME }}
+         password: ${{ secrets.REGISTRY_TOKEN }}
+
+      - name: build the stack
+        run: docker-compose up
+      
+      
