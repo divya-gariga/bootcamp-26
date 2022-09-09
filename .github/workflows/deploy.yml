@@ -22,17 +22,17 @@ jobs:
         working-directory: ./backend
         run: mvn clean install -DskipTests
 
-      # - name: build the stack
-      #   run: docker-compose up -d
-      - name: publish
-        uses: pennsignals/publish_docker-compose@v0.1.0
-        with:
-          docker_compose: 'docker-compose.yml' # required
-          repo_token: "${{ secrets.REGISTRY_TOKEN }}"
+      - name: build the stack
+        run: docker-compose up -d
+      # - name: publish
+      #   uses: pennsignals/publish_docker-compose@v0.1.0
+      #   with:
+      #     docker_compose: 'docker-compose.yml' # required
+      #     repo_token: "${{ secrets.REGISTRY_TOKEN }}"
 
-      # - name: push the db images
-      #   run: docker push ${{ secrets.REGISTRY }}/${{ secrets.REGISTRY_USERNAME }}/bootcamp-26-db-1:latest
-      # - name: push the backend image
-      #   run: docker push ${{ secrets.REGISTRY }}/${{ secrets.REGISTRY_USERNAME }}/bootcamp-26-backend-1:latest
-      # - name: push the backend image
-      #   run: docker push ${{ secrets.REGISTRY }}/${{ secrets.REGISTRY_USERNAME }}/bootcamp-26-frontend-1:latest
+      - name: push the db images
+        run: docker push ${{ secrets.REGISTRY }}/${{ secrets.REGISTRY_USERNAME }}/bootcamp-26/bootcamp-26-db-1:latest
+      - name: push the backend image
+        run: docker push ${{ secrets.REGISTRY }}/${{ secrets.REGISTRY_USERNAME }}/bootcamp-26/bootcamp-26-backend-1:latest
+      - name: push the backend image
+        run: docker push ${{ secrets.REGISTRY }}/${{ secrets.REGISTRY_USERNAME }}/bootcamp-26/bootcamp-26-frontend-1:latest
