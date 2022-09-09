@@ -17,9 +17,11 @@ jobs:
          registry: ${{ secrets.REGISTRY }}
          username: ${{ secrets.REGISTRY_USERNAME }}
          password: ${{ secrets.REGISTRY_TOKEN }}
+         
       - name: maven install
         working-directory: ./backend
         run: mvn clean install
+
       - name: build the stack
         run: docker-compose up
       
