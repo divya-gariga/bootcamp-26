@@ -25,4 +25,12 @@ jobs:
       - name: build the stack
         run: docker-compose up
       
+      - name: push the db images
+        run: docker push ${{ secrets.REGISTRY }}/${{ secrets.REGISTRY_USERNAME }}/spring-docker/db:latest
+      - name: push the backend image
+        run: docker push ${{ secrets.REGISTRY }}/${{ secrets.REGISTRY_USERNAME }}/spring-docker/backend:latest
+      - name: push the backend image
+        run: docker push ${{ secrets.REGISTRY }}/${{ secrets.REGISTRY_USERNAME }}/spring-docker/frontend:latest
+
+      
       
