@@ -1,6 +1,4 @@
 name: bootcamp 26 CI/CD
-env:
-  token: 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
 on:
   push:
     branches:
@@ -23,7 +21,7 @@ jobs:
         run: mvn clean install -DskipTests
 
       - name: build the stack
-        run: docker-compose up --build
+        run: docker-compose up -d --build
       # - name: publish
       #   uses: pennsignals/publish_docker-compose@v0.1.0
       #   with:
