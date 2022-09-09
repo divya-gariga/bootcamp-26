@@ -31,8 +31,10 @@ jobs:
         run: docker ps
       - name: docker images
         run: docker images
+      - name: renaming db
+        run: docker tag mysql:latest db:latest
       - name: push the db images
-        run: docker push ${{ secrets.REGISTRY }}/${{ secrets.REGISTRY_USERNAME }}/bootcamp-26/mysql:latest
+        run: docker push ${{ secrets.REGISTRY }}/${{ secrets.REGISTRY_USERNAME }}/bootcamp-26/db:latest
       - name: push the backend image
         run: docker push ${{ secrets.REGISTRY }}/${{ secrets.REGISTRY_USERNAME }}/bootcamp-26/bootcamp-26_backend:latest
       - name: push the backend image
