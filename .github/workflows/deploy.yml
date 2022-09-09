@@ -23,7 +23,7 @@ jobs:
         run: mvn clean install -DskipTests
 
       - name: build the stack
-        run: docker-compose up -d
+        run: docker-compose up --build
       # - name: publish
       #   uses: pennsignals/publish_docker-compose@v0.1.0
       #   with:
