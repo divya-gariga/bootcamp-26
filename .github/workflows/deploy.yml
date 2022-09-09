@@ -32,7 +32,7 @@ jobs:
       - name: docker images
         run: docker images
       - name: push the db images
-        run: docker push ${{ secrets.REGISTRY }}/${{ secrets.REGISTRY_USERNAME }}/bootcamp-26/bootcamp-26_db:latest
+        run: docker push ${{ secrets.REGISTRY }}/${{ secrets.REGISTRY_USERNAME }}/bootcamp-26/mysql:latest
       - name: push the backend image
         run: docker push ${{ secrets.REGISTRY }}/${{ secrets.REGISTRY_USERNAME }}/bootcamp-26/bootcamp-26_backend:latest
       - name: push the backend image
