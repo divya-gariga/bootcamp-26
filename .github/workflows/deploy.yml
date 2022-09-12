@@ -12,13 +12,17 @@ jobs:
       - name: docker login to github container registry
         uses: docker/login-action/@v2
         with:
-          registry: ${{ secrets.REGISTRY }}
-          username: ${{ secrets.REGISTRY_USERNAME }}
-          password: ${{ secrets.REGISTRY_TOKEN }}
+         registry: ${{ secrets.REGISTRY }}
+         username: ${{ secrets.REGISTRY_USERNAME }}
+         password: ${{ secrets.REGISTRY_TOKEN }}
 
       - name: maven install
         working-directory: ./backend
         run: mvn clean install -DskipTests
+      
+      # -name: build mysql
+       
+       
 
       - name: build the stack
         run: docker-compose up -d --build
@@ -31,10 +35,8 @@ jobs:
         run: docker ps
       - name: docker images
         run: docker images
-      - name: renaming db
-        run: docker tag mysql:latest db:latest
       - name: push the db images
-        run: docker push ${{ secrets.REGISTRY }}/${{ secrets.REGISTRY_USERNAME }}/bootcamp-26/db:latest
+        run: docker push ${{ secrets.REGISTRY }}/${{ secrets.REGISTRY_USERNAME }}/bootcamp-26/mysql:latest
       - name: push the backend image
         run: docker push ${{ secrets.REGISTRY }}/${{ secrets.REGISTRY_USERNAME }}/bootcamp-26/bootcamp-26_backend:latest
       - name: push the backend image
