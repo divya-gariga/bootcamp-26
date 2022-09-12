@@ -1,5 +1,5 @@
 {
-    "baseUrl":"http://localhost:3000",
+    "baseUrl":"http://13.235.80.157:3000",
     "viewportWidth": 1300,
   "viewportHeight": 800,
   "experimentalStudio":true
