@@ -22,15 +22,15 @@ jobs:
       
       - name: build mysql
         working-directory: ./database
-        run: docker build . -t bootcamp-26/bootcamp-26-db:latest
+        run: docker build . -t bootcamp-26-db:latest
       
       - name: build backend
         working-directory: ./backend
-        run: docker build . -t bootcamp-26/bootcamp-26-backend:latest
+        run: docker build . -t bootcamp-26-backend:latest
       
       - name: build frontend
         working-directory: ./frontend
-        run: docker build . -t bootcamp-26/bootcamp-26-frontend:latest
+        run: docker build . -t bootcamp-26-frontend:latest
 
       - name: docker push mysql
         run: docker push ${{ secrets.REGISTRY }}/${{ secrets.REGISTRY_USERNAME }}/bootcamp-26/bootcamp-26-db:latest
