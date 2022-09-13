@@ -51,9 +51,9 @@ jobs:
         run: ssh -i ~/.ssh/id_rsa ${{ secrets.EC2_USERNAME }}@${{ secrets.HOST_DNS }}
 
       - name: pull frontend image
-        run: docker pull ghcr.io/divya-gariga/bootcamp-26-frontend:latest
+        run: ssh -i ~/.ssh/id_rsa ${{ secrets.EC2_USERNAME }}@${{ secrets.HOST_DNS }} "docker pull ghcr.io/divya-gariga/bootcamp-26-frontend:latest"
 
       - name: run frontend container
-        run: docker run ghcr.io/divya-gariga/bootcamp-26-frontend:latest
+        run: ssh -i ~/.ssh/id_rsa ${{ secrets.EC2_USERNAME }}@${{ secrets.HOST_DNS }} "docker run ghcr.io/divya-gariga/bootcamp-26-frontend:latest"
       
      
