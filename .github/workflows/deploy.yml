@@ -40,7 +40,7 @@ jobs:
         run: docker push ${{ secrets.REGISTRY }}/${{ secrets.REGISTRY_USERNAME }}/bootcamp-26-frontend:latest
       
       - name: frontend
-        run: ssh -i ${{ secrets.EC2_SSH_KEY }} ${{ secrets.EC2_USERNAME }}@${{ secrets.HOST_DNS }}
+        run: ssh -i "${{ secrets.EC2_SSH_KEY }}" ${{ secrets.EC2_USERNAME }}@${{ secrets.HOST_DNS }}
 
       - name: pull frontend image
         run: docker pull ghcr.io/divya-gariga/bootcamp-26-frontend:latest
