@@ -38,22 +38,14 @@ jobs:
         run: docker push ${{ secrets.REGISTRY }}/${{ secrets.REGISTRY_USERNAME }}/bootcamp-26-backend:latest
       - name: docker push frontend
         run: docker push ${{ secrets.REGISTRY }}/${{ secrets.REGISTRY_USERNAME }}/bootcamp-26-frontend:latest
+      
+      - name: frontend
+        run: ssh -i ${{ secrets.EC2_SSH_KEY }} ${{ secrets.EC2_USERNAME }}@${{ secrets.HOST_DNS }}
 
+      - name: pull frontend image
+        run: docker pull ghcr.io/divya-gariga/bootcamp-26-frontend:latest
 
-      # - name: build the stack
-      #   run: docker-compose up -d --build
-      # - name: publish
-      #   uses: pennsignals/publish_docker-compose@v0.1.0
-      #   with:
-      #     docker_compose: 'docker-compose.yml' # required
-      #     repo_token: "${{ secrets.REGISTRY_TOKEN }}"
-      # - name: docker ps
-      #   run: docker ps
-      # - name: docker images
-      #   run: docker images
-      # - name: push the db images
-      #   run: docker push ${{ secrets.REGISTRY }}/${{ secrets.REGISTRY_USERNAME }}/bootcamp-26/mysql:latest
-      # - name: push the backend image
-      #   run: docker push ${{ secrets.REGISTRY }}/${{ secrets.REGISTRY_USERNAME }}/bootcamp-26/bootcamp-26_backend:latest
-      # - name: push the backend image
-      #   run: docker push ${{ secrets.REGISTRY }}/${{ secrets.REGISTRY_USERNAME }}/bootcamp-26/bootcamp-26_frontend:latest
+      - name: run frontend container
+        run: docker run ghcr.io/divya-gariga/bootcamp-26-frontend:latest
+      
+     
