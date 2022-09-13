@@ -16,28 +16,28 @@ jobs:
          username: ${{ secrets.REGISTRY_USERNAME }}
          password: ${{ secrets.REGISTRY_TOKEN }}
 
-      # - name: maven install
-      #   working-directory: ./backend
-      #   run: mvn clean install -DskipTests
+      - name: maven install
+        working-directory: ./backend
+        run: mvn clean install -DskipTests
       
-      # - name: build mysql
-      #   working-directory: ./database
-      #   run: docker build . -t ${{ secrets.REGISTRY }}/${{ secrets.REGISTRY_USERNAME }}/bootcamp-26-db:latest
+      - name: build mysql
+        working-directory: ./database
+        run: docker build . -t ${{ secrets.REGISTRY }}/${{ secrets.REGISTRY_USERNAME }}/bootcamp-26-db:latest
       
-      # - name: build backend
-      #   working-directory: ./backend
-      #   run: docker build . -t ${{ secrets.REGISTRY }}/${{ secrets.REGISTRY_USERNAME }}/bootcamp-26-backend:latest
+      - name: build backend
+        working-directory: ./backend
+        run: docker build . -t ${{ secrets.REGISTRY }}/${{ secrets.REGISTRY_USERNAME }}/bootcamp-26-backend:latest
       
-      # - name: build frontend
-      #   working-directory: ./frontend
-      #   run: docker build . -t ${{ secrets.REGISTRY }}/${{ secrets.REGISTRY_USERNAME }}/bootcamp-26-frontend:latest
+      - name: build frontend
+        working-directory: ./frontend
+        run: docker build . -t ${{ secrets.REGISTRY }}/${{ secrets.REGISTRY_USERNAME }}/bootcamp-26-frontend:latest
 
-      # - name: docker push mysql
-      #   run: docker push ${{ secrets.REGISTRY }}/${{ secrets.REGISTRY_USERNAME }}/bootcamp-26-db:latest
-      # - name: docker push backend
-      #   run: docker push ${{ secrets.REGISTRY }}/${{ secrets.REGISTRY_USERNAME }}/bootcamp-26-backend:latest
-      # - name: docker push frontend
-      #   run: docker push ${{ secrets.REGISTRY }}/${{ secrets.REGISTRY_USERNAME }}/bootcamp-26-frontend:latest
+      - name: docker push mysql
+        run: docker push ${{ secrets.REGISTRY }}/${{ secrets.REGISTRY_USERNAME }}/bootcamp-26-db:latest
+      - name: docker push backend
+        run: docker push ${{ secrets.REGISTRY }}/${{ secrets.REGISTRY_USERNAME }}/bootcamp-26-backend:latest
+      - name: docker push frontend
+        run: docker push ${{ secrets.REGISTRY }}/${{ secrets.REGISTRY_USERNAME }}/bootcamp-26-frontend:latest
       
       - name: create .ssh dir
         run: mkdir  ~/.ssh
@@ -45,15 +45,35 @@ jobs:
         run:  echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config    
       - name: copy key inside the ssh
         run:  echo -e "${{ secrets.EC2_SSH_KEY}}" > ~/.ssh/id_rsa  
-      - name: 
+      - name: setting file permissions
         run:  chmod 600 ~/.ssh/id_rsa
-      - name: frontend
-        run: ssh -i ~/.ssh/id_rsa ${{ secrets.EC2_USERNAME }}@${{ secrets.HOST_DNS }}
+      
+      - name: database
+        run: ssh -i ~/.ssh/id_rsa ${{ secrets.EC2_USERNAME }}@${{ secrets.DATABASE_HOST }} 
+    
+      - name: pull database image
+        run: ssh -i ~/.ssh/id_rsa ${{ secrets.EC2_USERNAME }}@${{ secrets.DATABASE_HOST }} "docker pull ghcr.io/divya-gariga/bootcamp-26-db:latest"
 
+      - name: run database container
+        run: ssh -i ~/.ssh/id_rsa ${{ secrets.EC2_USERNAME }}@${{ secrets.DATABASE_HOST }} " docker stop $(docker ps -a -q) && docker rm $(docker ps -a -q) && docker run --name=db -d ghcr.io/divya-gariga/bootcamp-26-db:latest"
+
+        
+      - name: backend 
+        run: ssh -i ~/.ssh/id_rsa ${{ secrets.EC2_USERNAME }}@${{ secrets.BACKEND_HOST }} 
+    
+      - name: pull backend image
+        run: ssh -i ~/.ssh/id_rsa ${{ secrets.EC2_USERNAME }}@${{ secrets.BACKEND_HOST }} "docker pull ghcr.io/divya-gariga/bootcamp-26-backend:latest"
+
+      - name: run backend container
+        run: ssh -i ~/.ssh/id_rsa ${{ secrets.EC2_USERNAME }}@${{ secrets.BACKEND_HOST }} " docker stop $(docker ps -a -q) && docker rm $(docker ps -a -q) && docker run --name=backend -p 8090:8090 -d ghcr.io/divya-gariga/bootcamp-26-backend:latest"
+
+      
+      - name: frontend
+        run: ssh -i ~/.ssh/id_rsa ${{ secrets.EC2_USERNAME }}@${{ secrets.FRONTEND_HOST }} 
       - name: pull frontend image
-        run: ssh -i ~/.ssh/id_rsa ${{ secrets.EC2_USERNAME }}@${{ secrets.HOST_DNS }} "docker pull ghcr.io/divya-gariga/bootcamp-26-frontend:latest"
+        run: ssh -i ~/.ssh/id_rsa ${{ secrets.EC2_USERNAME }}@${{ secrets.FRONTEND_HOST }} "docker pull ghcr.io/divya-gariga/bootcamp-26-frontend:latest"
 
       - name: run frontend container
-        run: ssh -i ~/.ssh/id_rsa ${{ secrets.EC2_USERNAME }}@${{ secrets.HOST_DNS }} "docker run --name=frontend -d -p 3000:3000 ghcr.io/divya-gariga/bootcamp-26-frontend:latest"
+        run: ssh -i ~/.ssh/id_rsa ${{ secrets.EC2_USERNAME }}@${{ secrets.FRONTEND_HOST }} "docker stop $(docker ps -a -q) && docker rm $(docker ps -a -q) && docker run --name=frontend -d -p 3000:3000 ghcr.io/divya-gariga/bootcamp-26-frontend:latest"
       
      

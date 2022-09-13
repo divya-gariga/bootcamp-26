@@ -23,7 +23,7 @@ context("My library page",()=>{
             dependency.visitImage("task-card-4-image");
         })
         it("renders currently reading",()=>{
-            cy.get('[data-cy=currently-reading-book-card-1]').click().url().should("include","http://localhost:3000/bookDetailView/1");
+            cy.get('[data-cy=currently-reading-book-card-1]').click().url().should("include","http://13.127.204.239:3000/bookDetailView/1");
         })
     })
 })
