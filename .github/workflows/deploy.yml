@@ -55,7 +55,7 @@ jobs:
         run: ssh -i ~/.ssh/id_rsa ${{ secrets.EC2_USERNAME }}@${{ secrets.DATABASE_HOST }} "docker pull ghcr.io/divya-gariga/bootcamp-26-db:latest"
 
       - name: run database container
-        run: ssh -i ~/.ssh/id_rsa ${{ secrets.EC2_USERNAME }}@${{ secrets.DATABASE_HOST }} "docker run -d ghcr.io/divya-gariga/bootcamp-26-db:latest"
+        run: ssh -i ~/.ssh/id_rsa ${{ secrets.EC2_USERNAME }}@${{ secrets.DATABASE_HOST }} "docker run -d -p 3306:3306 ghcr.io/divya-gariga/bootcamp-26-db:latest"
 
         
       - name: backend 
@@ -65,14 +65,13 @@ jobs:
         run: ssh -i ~/.ssh/id_rsa ${{ secrets.EC2_USERNAME }}@${{ secrets.BACKEND_HOST }} "docker pull ghcr.io/divya-gariga/bootcamp-26-backend:latest"
 
       - name: run backend container
-        run: ssh -i ~/.ssh/id_rsa ${{ secrets.EC2_USERNAME }}@${{ secrets.BACKEND_HOST }} "docker run -p 8090:8090 -d ghcr.io/divya-gariga/bootcamp-26-backend:latest"
+        run: ssh -i ~/.ssh/id_rsa ${{ secrets.EC2_USERNAME }}@${{ secrets.BACKEND_HOST }} "docker run -d -p 8090:8090 ghcr.io/divya-gariga/bootcamp-26-backend:latest"
 
       
       - name: frontend
         run: ssh -i ~/.ssh/id_rsa ${{ secrets.EC2_USERNAME }}@${{ secrets.FRONTEND_HOST }} 
       - name: pull frontend image
         run: ssh -i ~/.ssh/id_rsa ${{ secrets.EC2_USERNAME }}@${{ secrets.FRONTEND_HOST }} "docker pull ghcr.io/divya-gariga/bootcamp-26-frontend:latest"
-
       - name: run frontend container
         run: ssh -i ~/.ssh/id_rsa ${{ secrets.EC2_USERNAME }}@${{ secrets.FRONTEND_HOST }} "docker run -d -p 3000:3000 ghcr.io/divya-gariga/bootcamp-26-frontend:latest"
       
