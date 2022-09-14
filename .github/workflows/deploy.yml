@@ -52,26 +52,26 @@ jobs:
         run: ssh -i ~/.ssh/id_rsa ${{ secrets.EC2_USERNAME }}@${{ secrets.DATABASE_HOST }} 
     
       - name: pull database image
-        run: ssh -i ~/.ssh/id_rsa ${{ secrets.EC2_USERNAME }}@${{ secrets.DATABASE_HOST }} "docker ps -aq | xargs docker stop | xargs docker rm && docker rmi $(docker images -q) && docker pull ghcr.io/divya-gariga/bootcamp-26-db:latest"
+        run: ssh -i ~/.ssh/id_rsa ${{ secrets.EC2_USERNAME }}@${{ secrets.DATABASE_HOST }} "docker pull ghcr.io/divya-gariga/bootcamp-26-db:latest"
 
       - name: run database container
-        run: ssh -i ~/.ssh/id_rsa ${{ secrets.EC2_USERNAME }}@${{ secrets.DATABASE_HOST }} "docker run -d -p 3306:3306 ghcr.io/divya-gariga/bootcamp-26-db:latest"
+        run: ssh -i ~/.ssh/id_rsa ${{ secrets.EC2_USERNAME }}@${{ secrets.DATABASE_HOST }} "docker ps -aq | xargs docker stop | xargs docker rm && docker run -d -p 3306:3306 ghcr.io/divya-gariga/bootcamp-26-db:latest"
 
         
       - name: backend 
         run: ssh -i ~/.ssh/id_rsa ${{ secrets.EC2_USERNAME }}@${{ secrets.BACKEND_HOST }} 
     
       - name: pull backend image
-        run: ssh -i ~/.ssh/id_rsa ${{ secrets.EC2_USERNAME }}@${{ secrets.BACKEND_HOST }} "docker ps -aq | xargs docker stop | xargs docker rm && docker rmi $(docker images -q) && docker pull ghcr.io/divya-gariga/bootcamp-26-backend:latest"
+        run: ssh -i ~/.ssh/id_rsa ${{ secrets.EC2_USERNAME }}@${{ secrets.BACKEND_HOST }} "docker rmi $(docker images -q) && docker pull ghcr.io/divya-gariga/bootcamp-26-backend:latest"
 
       - name: run backend container
-        run: ssh -i ~/.ssh/id_rsa ${{ secrets.EC2_USERNAME }}@${{ secrets.BACKEND_HOST }} "docker run -d -p 8090:8090 ghcr.io/divya-gariga/bootcamp-26-backend:latest"
+        run: ssh -i ~/.ssh/id_rsa ${{ secrets.EC2_USERNAME }}@${{ secrets.BACKEND_HOST }} "docker ps -aq | xargs docker stop | xargs docker rm && docker run -d -p 8090:8090 ghcr.io/divya-gariga/bootcamp-26-backend:latest"
 
       
       - name: frontend
         run: ssh -i ~/.ssh/id_rsa ${{ secrets.EC2_USERNAME }}@${{ secrets.FRONTEND_HOST }} 
       - name: pull frontend image
-        run: ssh -i ~/.ssh/id_rsa ${{ secrets.EC2_USERNAME }}@${{ secrets.FRONTEND_HOST }} "docker ps -aq | xargs docker stop | xargs docker rm && docker rmi $(docker images -q) && docker pull ghcr.io/divya-gariga/bootcamp-26-frontend:latest"
+        run: ssh -i ~/.ssh/id_rsa ${{ secrets.EC2_USERNAME }}@${{ secrets.FRONTEND_HOST }} "docker pull ghcr.io/divya-gariga/bootcamp-26-frontend:latest"
       - name: run frontend container
         run: ssh -i ~/.ssh/id_rsa ${{ secrets.EC2_USERNAME }}@${{ secrets.FRONTEND_HOST }} "docker run -d -p 3000:3000 ghcr.io/divya-gariga/bootcamp-26-frontend:latest"
       
