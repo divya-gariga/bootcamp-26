@@ -15,29 +15,39 @@ jobs:
          registry: ${{ secrets.REGISTRY }}
          username: ${{ secrets.REGISTRY_USERNAME }}
          password: ${{ secrets.REGISTRY_TOKEN }}
-
       - name: maven install
         working-directory: ./backend
         run: mvn clean install -DskipTests
-      
+
+  build_db:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
       - name: build mysql
         working-directory: ./database
         run: docker build . -t ${{ secrets.REGISTRY }}/${{ secrets.REGISTRY_USERNAME }}/bootcamp-26-db:latest
-      
+      - name: docker push mysql
+        run: docker push ${{ secrets.REGISTRY }}/${{ secrets.REGISTRY_USERNAME }}/bootcamp-26-db:latest
+        
+  build_backend:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
       - name: build backend
         working-directory: ./backend
         run: docker build . -t ${{ secrets.REGISTRY }}/${{ secrets.REGISTRY_USERNAME }}/bootcamp-26-backend:latest
-      
-      - name: build frontend
-        working-directory: ./frontend
-        run: docker build . -t ${{ secrets.REGISTRY }}/${{ secrets.REGISTRY_USERNAME }}/bootcamp-26-frontend:latest
-
-      - name: docker push mysql
-        run: docker push ${{ secrets.REGISTRY }}/${{ secrets.REGISTRY_USERNAME }}/bootcamp-26-db:latest
       - name: docker push backend
         run: docker push ${{ secrets.REGISTRY }}/${{ secrets.REGISTRY_USERNAME }}/bootcamp-26-backend:latest
-      - name: docker push frontend
-        run: docker push ${{ secrets.REGISTRY }}/${{ secrets.REGISTRY_USERNAME }}/bootcamp-26-frontend:latest
+ 
+  build_frontend:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+     - name: build frontend
+       working-directory: ./frontend
+       run: docker build . -t ${{ secrets.REGISTRY }}/${{ secrets.REGISTRY_USERNAME }}/bootcamp-26-frontend:latest 
+     - name: docker push frontend
+       run: docker push ${{ secrets.REGISTRY }}/${{ secrets.REGISTRY_USERNAME }}/bootcamp-26-frontend:latest
 
   deploy:
     needs: build
@@ -63,4 +73,4 @@ jobs:
      
     
    
-     
+      
